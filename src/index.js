@@ -4,15 +4,15 @@ const _ = require('lodash');
 const hash = require('object-hash');
 
 const start/* : Puzzle */ = [
-  [0, 2, 3,],
-  [1, 4, 5,],
-  [8, 7, 6,],
+  [0, 2, 3],
+  [1, 4, 5],
+  [8, 7, 6],
 ];
 
 const goal/* : Puzzle */ = [
-  [1, 2, 3,],
-  [8, 0, 4,],
-  [7, 6, 5,],
+  [1, 2, 3],
+  [8, 0, 4],
+  [7, 6, 5],
 ];
 
 const steps/* Array<string> */ = [];
@@ -65,15 +65,20 @@ const move = (puzzle/* : Puzzle*/, direction/* : Direction */ )/* : Puzzle */ =>
 const stepExists = (puzzle/* : Puzzle */, steps/* : Array<string> */) =>
   _.findIndex(steps, (step) => step === hash(puzzle)) !== -1;
 
+const sleep = async (millis) => new Promise(resolve => setTimeout(resolve, millis));
+
 const backtrack = async (puzzle/* : Puzzle */) => {
-  if (hash(puzzle) === hash(goal)) { print_puzzle(puzzle); return; }
+  if (stepExists(goal, steps)) return;
   if (stepExists(puzzle, steps)) return;
   if (stepExists(puzzle, closedSteps)) return;
   steps.push(hash(puzzle));
-  backtrack(move(puzzle, 'right'))
-  backtrack(move(puzzle, 'left'))
-  backtrack(move(puzzle, 'up'))
-  backtrack(move(puzzle, 'down'))
+  term.clear();
+  print_puzzle(puzzle);
+  await sleep(200);
+  await backtrack(move(puzzle, 'right'))
+  await backtrack(move(puzzle, 'left'))
+  await backtrack(move(puzzle, 'up'))
+  await backtrack(move(puzzle, 'down'))
   closedSteps.push(hash(puzzle));
   _.pull(steps, (step) => step === hash(puzzle));
 }
