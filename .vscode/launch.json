@@ -5,15 +5,16 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Launch via NPM",
       "type": "node",
       "request": "launch",
-      "name": "Launch via NPM",
+      "cwd": "${workspaceRoot}",
       "runtimeExecutable": "npm",
       "runtimeArgs": [
-        "run-script",
-        "debug"
+          "run-script", "debug"
       ],
-      "port": 9229
+      "port": 9229,
+      "console": "integratedTerminal"
     },
   ]
 }
